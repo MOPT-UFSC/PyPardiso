@@ -7,11 +7,23 @@ import warnings
 import hashlib
 import site
 from ctypes.util import find_library
+from enum import IntEnum
 
 import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import SparseEfficiencyWarning
 
+
+class Matrix_type(IntEnum):
+    RSS=1   #Real and structurally symmetric
+    RSPD=2   #Real and symmetric positive definite
+    RSI=-2   #Real and symmetric indefinite
+    CSS=3   #Complex and structurally symmetric
+    CHP=4   #Complex and Hermitian positive definite
+    CH=-4   #Complex and Hermitian indefinite
+    CS=6   #Complex and symmetric matrix
+    RNS=11   #Real and nonsymmetric matrix
+    CNS=13   #Complex and nonsymmetric matrix
 
 class PyPardisoSolver:
     """
@@ -56,7 +68,7 @@ class PyPardisoSolver:
 
     """
 
-    def __init__(self, mtype=11, phase=13, size_limit_storage=5e7):
+    def __init__(self, mtype=Matrix_type.RNS, phase=13, size_limit_storage=5e7):
 
         self.libmkl = None
 
@@ -237,8 +249,8 @@ class PyPardisoSolver:
             row_col = 'column' if self._solve_transposed else 'row'
             raise ValueError('Matrix A is singular, because it contains empty {}(s)'.format(row_col))
 
-        if A.dtype != np.float64:
-            raise TypeError('PyPardiso currently only supports float64, but matrix A has dtype: {}'.format(A.dtype))
+        if (A.dtype != np.float64) and (A.dtype != np.cdouble):
+            raise TypeError('PyPardiso currently only supports float64,cdouble, but matrix A has dtype: {}'.format(A.dtype))
 
     def _check_b(self, A, b):
         if sp.issparse(b):
@@ -253,11 +265,15 @@ class PyPardisoSolver:
         if b.shape[0] != A.shape[0]:
             raise ValueError("Dimension mismatch: Matrix A {} and array b {}".format(A.shape, b.shape))
 
-        if b.dtype != np.float64:
+        if (b.dtype != np.float64) and (b.dtype != np.cdouble):
             if b.dtype in [np.float16, np.float32, np.int16, np.int32, np.int64]:
                 warnings.warn("Array b's data type was converted from {} to float64".format(str(b.dtype)),
                               PyPardisoWarning)
                 b = b.astype(np.float64)
+            elif b.dtype in [np.csingle, np.longdouble]:
+                warnings.warn("Array b's data type was converted from {} to cdouble".format(str(b.dtype)),
+                              PyPardisoWarning)
+                b = b.astype(np.cdouble)
             else:
                 raise TypeError('Dtype {} for array b is not supported'.format(str(b.dtype)))
 
@@ -273,7 +289,7 @@ class PyPardisoSolver:
         # 1-based indexing
         ia = A.indptr + 1
         ja = A.indices + 1
-
+        
         self._mkl_pardiso(self.pt.ctypes.data_as(ctypes.POINTER(self._pt_type[0])),  # pt
                           ctypes.byref(ctypes.c_int32(1)),  # maxfct
                           ctypes.byref(ctypes.c_int32(1)),  # mnum
