@@ -2,8 +2,6 @@
 from importlib.metadata import version, PackageNotFoundError
 
 from .pardiso_wrapper import PyPardisoSolver, Matrix_type
-from .scipy_aliases import spsolve, factorized
-from .scipy_aliases import pypardiso_solver as ps
 
 
 try:
@@ -11,4 +9,4 @@ try:
 except PackageNotFoundError:
     __version__ = "0.0.0"
 
-__all__ = ['PyPardisoSolver', 'spsolve', 'factorized', 'ps']
+__all__ = ['PyPardisoSolver', 'Matrix_type']
