@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pypardiso-mopt"
+name = "pypardiso_mopt"
 version = "0.1.0"
 description = "Python interface to the Intel MKL Pardiso library to solve large sparse linear systems of equations"
 authors = [
@@ -8,6 +8,9 @@ authors = [
 ]
 readme = "README.md"
 license = "LICENSE.txt"
+packages = [
+    {include = "pypardiso"}
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
