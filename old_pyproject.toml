@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypardiso-mopt"
+authors = [
+    {name = "Adrian Haas"},
+    {name = "André Fernandes", email = "fpf.andre@gmail.com"},
+]
+description = "Python interface to the Intel MKL Pardiso library to solve large sparse linear systems of equations"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["pardiso", "sparse solver"]
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Mathematics"
+]
+dynamic = ["version"]
+dependencies = [
+  "mkl!=2024.0",
+  "numpy",
+  "scipy"
+]
+
+[project.urls]
+Homepage = "https://github.com/MOPT-UFSC/PyPardiso"
+Repository = "https://github.com/MOPT-UFSC/PyPardiso.git"
+
+[tool.setuptools_scm]
+normalize = true

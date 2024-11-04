@@ -1,32 +1,24 @@
-[build-system]
-requires = ["setuptools", "setuptools_scm"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "pypardiso"
-authors = [
-    {name = "Adrian Haas"}
-]
+[tool.poetry]
+name = "pypardiso-mopt"
+version = "0.1.0"
 description = "Python interface to the Intel MKL Pardiso library to solve large sparse linear systems of equations"
+authors = [
+    "Adrian Haas",
+    "André Fernandes <fpf.andre@gmail.com>",
+]
 readme = "README.md"
-requires-python = ">=3.8"
-keywords = ["pardiso", "sparse solver"]
-license = {file = "LICENSE.txt"}
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Topic :: Scientific/Engineering :: Mathematics"
-]
-dynamic = ["version"]
-dependencies = [
-  "mkl!=2024.0",
-  "numpy",
-  "scipy"
-]
+license = "LICENSE.txt"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+mkl = "!=2024.0"
+numpy = ">=1.26"
+scipy = ">=1.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [project.urls]
-Homepage = "https://github.com/haasad/PyPardiso"
-Repository = "https://github.com/haasad/PyPardiso.git"
-Changelog = "https://github.com/haasad/PyPardiso/releases"
-
-[tool.setuptools_scm]
-normalize = true
+Homepage = "https://github.com/MOPT-UFSC/PyPardiso"
+Repository = "https://github.com/MOPT-UFSC/PyPardiso.git"
