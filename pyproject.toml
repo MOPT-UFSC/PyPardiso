@@ -1,25 +1,26 @@
-[tool.poetry]
+[project]
 name = "pypardiso_mopt"
 version = "0.1.0"
 description = "Python interface to the Intel MKL Pardiso library to solve large sparse linear systems of equations"
 authors = [
-    "Adrian Haas",
-    "André Fernandes <fpf.andre@gmail.com>",
+    {name = "Your Name",email = "you@example.com"}
 ]
+license = {file = "LICENSE.txt"}
 readme = "README.md"
-license = "LICENSE.txt"
-packages = [
-    {include = "pypardiso"}
+requires-python = ">=3.10"
+dependencies = [
+    "mkl (!=2024.0)",
+    "numpy (>=1.26)",
+    "scipy (>=1.11)"
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.8"
-mkl = "!=2024.0"
-numpy = ">=1.26"
-scipy = ">=1.11"
+[tool.poetry]
+packages = [
+    { include = "pypardiso" },
+]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project.urls]
